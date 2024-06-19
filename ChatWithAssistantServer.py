@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import os
 import json
 import requests
@@ -6,6 +7,7 @@ from dotenv import load_dotenv
 from requests.auth import HTTPBasicAuth
 
 app = Flask(__name__)
+CORS(app)
 
 # Load environment variables
 load_dotenv('../.env')
