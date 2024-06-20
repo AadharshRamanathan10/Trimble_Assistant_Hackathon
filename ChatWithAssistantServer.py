@@ -4,7 +4,6 @@ import os
 import json
 import requests
 from dotenv import load_dotenv
-from requests.auth import HTTPBasicAuth
 
 app = Flask(__name__)
 CORS(app)
@@ -19,6 +18,7 @@ client_secret = 'ccb917129b204285a55cf02e3214893b'
 # Define URLs
 url_token = 'https://id.trimble.com/oauth/token'
 url_epic_to_userstories = "https://agw.construction-integration.trimble.cloud/trimbledeveloperprogram/assistants/v1/agents/epic-to-userstories/messages"
+url_story_diagram_provider = "https://agw.construction-integration.trimble.cloud/trimbledeveloperprogram/assistants/v1/agents/epic-story-diagram-provider/messages"
 
 # Define headers
 headers_token = {
@@ -26,6 +26,9 @@ headers_token = {
     'Authorization': 'Basic IGNjMDliMDc1LWNhMzMtNGI4Zi05NTJjLWNhM2M3OGRjMjYzMDpjY2I5MTcxMjliMjA0Mjg1YTU1Y2YwMmUzMjE0ODkzYg=='
 }
 headers_epic_to_userstories = {
+    'Content-Type': 'application/json'
+}
+headers_story_diagram_provider = {
     'Content-Type': 'application/json'
 }
 
@@ -37,24 +40,50 @@ data_token = {
 
 def send_message(url, headers, request_body):
     response = requests.post(url, headers=headers, data=json.dumps(request_body))
-    if response.status_code == 200:
-        return response.json()
-    else:
-        raise Exception(f"Error {response.status_code}: {response.text}")
+    response.raise_for_status()
+    return response.json()
 
 @app.route('/sendmessage', methods=['POST'])
 def send_message_api():
+    print("Received a request to send a message.")
     request_body_epic = request.get_json()
-    # Get token
-    response_token = requests.post(url_token, headers=headers_token, data=data_token)
-    token = response_token.json()['access_token']
+    print("Request body parsed.")
 
-    # Update headers for assistant with the token
-    headers_epic_to_userstories['Authorization'] = 'Bearer ' + token
+    try:
+        # Get token
+        print("Getting token...")
+        response_token = requests.post(url_token, headers=headers_token, data=data_token)
+        response_token.raise_for_status()
+        token = response_token.json().get('access_token')
+        if not token:
+            raise Exception("No access token found in token response.")
+        print("Token received.")
 
-    # Send message for epic to user stories
-    response_data_epic = send_message(url_epic_to_userstories, headers_epic_to_userstories, request_body_epic)
-    return jsonify(response_data_epic)
+        # Update headers for assistant with the token
+        headers_epic_to_userstories['Authorization'] = 'Bearer ' + token
+        headers_story_diagram_provider['Authorization'] = 'Bearer ' + token
+        print("Headers updated with the token.")
+
+        # Send message for epic to user stories
+        print("Sending message for epic to user stories...")
+        response_data_epic = send_message(url_epic_to_userstories, headers_epic_to_userstories, request_body_epic)
+        print("Received response from epic to user stories agent.")
+        print("Response from epic: ", response_data_epic)
+
+        # Use the response from the first agent to send a message to the second agent
+        request_body_diagram = {
+            "message": response_data_epic 
+        }
+        print("Sending message to epic story diagram provider...")
+        response_data_diagram = send_message(url_story_diagram_provider, headers_story_diagram_provider, request_body_diagram)
+        print("Received response from epic story diagram provider agent.")
+        print("Response for diagram: ", response_data_diagram)
+
+        return jsonify(response_data_diagram)
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)
+
