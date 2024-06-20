@@ -1,0 +1,62 @@
+{
+    "epics": [
+        {
+            "title": "Epic 1",
+            "description": "This is the first epic.",
+            "workflow": "Workflow for Epic 1",
+            "acceptance_criteria": "Acceptance criteria for Epic 1",
+            "dependencies": "Dependencies for Epic 1",
+            "Impacted_Features": "Impacted features for Epic 1",
+            "estimation": "Estimation for Epic 1"
+        },
+        {
+            "title": "Epic 2",
+            "description": "This is the second epic.",
+            "workflow": "Workflow for Epic 2",
+            "acceptance_criteria": "Acceptance criteria for Epic 2",
+            "dependencies": "Dependencies for Epic 2",
+            "Impacted_Features": "Impacted features for Epic 2",
+            "estimation": "Estimation for Epic 2"
+        }
+    ],
+    "tasks": [
+        {
+            "title": "Task 1",
+            "description": "This is the first task.",
+            "workflow": "Workflow for Task 1",
+            "acceptance_criteria": "Acceptance criteria for Task 1",
+            "dependencies": "Dependencies for Task 1",
+            "Impacted_Features": "Impacted features for Task 1",
+            "estimation": "Estimation for Task 1"
+        },
+        {
+            "title": "Task 2",
+            "description": "This is the second task.",
+            "workflow": "Workflow for Task 2",
+            "acceptance_criteria": "Acceptance criteria for Task 2",
+            "dependencies": "Dependencies for Task 2",
+            "Impacted_Features": "Impacted features for Task 2",
+            "estimation": "Estimation for Task 2"
+        }
+    ],
+    "user_stories": [
+        {
+            "title": "User Story 1",
+            "description": "This is the first user story.",
+            "workflow": "Workflow for User Story 1",
+            "acceptance_criteria": "Acceptance criteria for User Story 1",
+            "dependencies": "Dependencies for User Story 1",
+            "Impacted_Features": "Impacted features for User Story 1",
+            "estimation": "Estimation for User Story 1"
+        },
+        {
+            "title": "User Story 2",
+            "description": "This is the second user story.",
+            "workflow": "Workflow for User Story 2",
+            "acceptance_criteria": "Acceptance criteria for User Story 2",
+            "dependencies": "Dependencies for User Story 2",
+            "Impacted_Features": "Impacted features for User Story 2",
+            "estimation": "Estimation for User Story 2"
+        }
+    ]
+}
