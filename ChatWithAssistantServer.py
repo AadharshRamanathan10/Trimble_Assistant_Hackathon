@@ -41,12 +41,15 @@ data_token = {
 def send_message(url, headers, request_body):
     response = requests.post(url, headers=headers, data=json.dumps(request_body))
     response.raise_for_status()
-    return response.json()
+    message = response.json().get('message')  # Get 'message' from the response text
+    return message  # Return 'message' instead of the whole response
+# .json()
 
 @app.route('/sendmessage', methods=['POST'])
 def send_message_api():
     print("Received a request to send a message.")
     request_body_epic = request.get_json()
+    request_body_diagram = request_body_epic
     print("Request body parsed.")
 
     try:
@@ -71,9 +74,7 @@ def send_message_api():
         print("Response from epic: ", response_data_epic)
 
         # Use the response from the first agent to send a message to the second agent
-        request_body_diagram = {
-            "message": response_data_epic 
-        }
+        request_body_diagram['message'] = response_data_epic
         print("Sending message to epic story diagram provider...")
         response_data_diagram = send_message(url_story_diagram_provider, headers_story_diagram_provider, request_body_diagram)
         print("Received response from epic story diagram provider agent.")
