@@ -28,6 +28,68 @@
   color: #61dafb;
 }
 
+.jira-board-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #f4f4f4;
+  height: 50%;
+  box-sizing: border-box;
+}
+.jira-board {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+  padding: 20px;
+  margin: 20px;
+  position: relative;
+}
+.jira-board h2 {
+  color: #333;
+  margin-top: 0;
+}
+.jira-board .field {
+  margin-bottom: 15px;
+}
+.jira-board .field label {
+  font-weight: bold;
+  color: #555;
+}
+.jira-board .field p {
+  margin: 5px 0 0;
+  color: #777;
+}
+.diagram-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.diagram-button:hover {
+  background-color: #0056b3;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(252, 252, 252, 0.3);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
