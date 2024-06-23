@@ -3,6 +3,7 @@ from flask_cors import CORS
 import os
 import json
 import requests
+from JsonConverter import main as convert_to_json
 from dotenv import load_dotenv
 
 app = Flask(__name__)
@@ -50,6 +51,8 @@ def send_message_api():
     print("Received a request to send a message.")
     request_body_epic = request.get_json()
     request_body_diagram = request_body_epic
+    request_body_epic['model_id'] = 'gpt-4o'
+    request_body_diagram = request_body_epic
     print("Request body parsed.")
 
     try:
@@ -79,8 +82,11 @@ def send_message_api():
         response_data_diagram = send_message(url_story_diagram_provider, headers_story_diagram_provider, request_body_diagram)
         print("Received response from epic story diagram provider agent.")
         print("Response for diagram: ", response_data_diagram)
+        with open('response.txt', 'w') as txt_file:
+            txt_file.write(response_data_diagram)
+        json_output = convert_to_json('response.txt', 'output.json')
 
-        return jsonify(response_data_diagram)
+        return jsonify(json_output)
     except Exception as e:
         print(f"Error: {str(e)}")
         return jsonify({'error': str(e)}), 500
