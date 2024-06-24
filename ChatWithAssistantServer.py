@@ -3,6 +3,7 @@ from flask_cors import CORS
 import os
 import json
 import requests
+from JsonConverter import main as jsonConvert
 from dotenv import load_dotenv
 
 app = Flask(__name__)
@@ -91,17 +92,9 @@ def send_message_api():
         with open('response.txt', 'w') as txt_file:
             txt_file.write(response_data_diagram)
         
-        request_body_Json['message'] = response_data_diagram
-        print("Sending message to Json converter...")
-        response_Json = send_message(url_Json, headers_story_diagram_provider, request_body_Json)
-        print("Received response from epic story diagram provider agent.")
-        print("Response for diagram: ", response_Json)
-        with open('Json.txt', 'w') as txt_file:
-            txt_file.write(response_Json)
 
-        print("Retrieved JSON data from the second agent.")
+        json_output = jsonConvert('response.txt', 'output.json')
 
-        # Load the JSON data from the file
         with open('output.json', 'r') as f:
             data = json.load(f)
             
