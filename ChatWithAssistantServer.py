@@ -3,7 +3,6 @@ from flask_cors import CORS
 import os
 import json
 import requests
-from JsonConverter import main as convert_to_json
 from dotenv import load_dotenv
 
 app = Flask(__name__)
@@ -20,6 +19,7 @@ client_secret = 'ccb917129b204285a55cf02e3214893b'
 url_token = 'https://id.trimble.com/oauth/token'
 url_epic_to_userstories = "https://agw.construction-integration.trimble.cloud/trimbledeveloperprogram/assistants/v1/agents/epic-to-userstories/messages"
 url_story_diagram_provider = "https://agw.construction-integration.trimble.cloud/trimbledeveloperprogram/assistants/v1/agents/epic-story-diagram-provider/messages"
+url_Json = "https://agw.construction-integration.trimble.cloud/trimbledeveloperprogram/assistants/v1/agents/sample-agent/messages"
 
 # Define headers
 headers_token = {
@@ -30,6 +30,9 @@ headers_epic_to_userstories = {
     'Content-Type': 'application/json'
 }
 headers_story_diagram_provider = {
+    'Content-Type': 'application/json'
+}
+headers_Json = {
     'Content-Type': 'application/json'
 }
 
@@ -53,6 +56,7 @@ def send_message_api():
     request_body_diagram = request_body_epic
     request_body_epic['model_id'] = 'gpt-4o'
     request_body_diagram = request_body_epic
+    request_body_Json = request_body_epic
     print("Request body parsed.")
 
     try:
@@ -86,7 +90,14 @@ def send_message_api():
    
         with open('response.txt', 'w') as txt_file:
             txt_file.write(response_data_diagram)
-        json_output = convert_to_json('response.txt', 'output.json')
+        
+        request_body_Json['message'] = response_data_diagram
+        print("Sending message to Json converter...")
+        response_Json = send_message(url_Json, headers_story_diagram_provider, request_body_Json)
+        print("Received response from epic story diagram provider agent.")
+        print("Response for diagram: ", response_Json)
+        with open('Json.txt', 'w') as txt_file:
+            txt_file.write(response_Json)
 
         print("Retrieved JSON data from the second agent.")
 
