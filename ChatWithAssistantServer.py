@@ -82,15 +82,24 @@ def send_message_api():
         response_data_diagram = send_message(url_story_diagram_provider, headers_story_diagram_provider, request_body_diagram)
         print("Received response from epic story diagram provider agent.")
         print("Response for diagram: ", response_data_diagram)
+
+   
         with open('response.txt', 'w') as txt_file:
             txt_file.write(response_data_diagram)
         json_output = convert_to_json('response.txt', 'output.json')
 
-        return jsonify(json_output)
+        print("Retrieved JSON data from the second agent.")
+
+        # Load the JSON data from the file
+        with open('output.json', 'r') as f:
+            data = json.load(f)
+            
+        return data
+    
+        # return jsonify(json_output)
     except Exception as e:
         print(f"Error: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)
-

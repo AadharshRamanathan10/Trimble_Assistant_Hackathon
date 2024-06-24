@@ -9,11 +9,12 @@ def parse_input(input_text):
         feature_lines = feature.strip().split('\n')
         feature_name = feature_lines[0].strip()
 
-        epics = re.split(r'\*\*Epic:', feature)
+        epics = re.split(r'\*\*Epics:|\*\*Epic:|#### Epic:|#### Epics:|#### Epic', feature)
         for epic in epics[1:]:
             epic_title_match = re.search(r'(.+?)(?=\*\*)', epic)
             epic_title = epic_title_match.group(1).strip() if epic_title_match else ""
-            epic_description = re.search(r'\*\*Epic Description:\*\* (.+)', epic)
+            epic_description = re.search(r'\*\*Description:\*\* (.+)|\*\*Epic Description:\*\* (.+)', epic)
+            # epic_description = re.search(r'\*\*Description:\*\* (.+)', epic)
             epic_description = epic_description.group(1) if epic_description else ""
 
             acceptance_criteria = re.search(r'\*\*Acceptance Criteria:\*\*\n\s*-\s*(.*?)(?=\s*\*\*)', epic, re.DOTALL)
