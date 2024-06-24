@@ -150,7 +150,7 @@ const handleShow = (task) => {
     setIsLoading(true);
     const message = `\nDescription: It is a mobile based application and needs cloud solution ${text} Team Structure: ${teamStructure}\nArchitectural Implications: ${architecturalImplications}\nIndustry: ${industry} `;
     console.log(message);
-    fetch('http://127.0.0.1:5000/sendmessage', {
+    fetch('https://visionflow.eastus.cloudapp.azure.com:8080/sendmessage', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
